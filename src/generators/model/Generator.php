@@ -19,6 +19,7 @@ use yii\helpers\Inflector;
  */
 class Generator extends \yii\gii\generators\model\Generator
 {
+
     /**
      * @var bool whether to overwrite (extended) model classes, will be always created, if file does not exist
      */
@@ -307,9 +308,17 @@ class Generator extends \yii\gii\generators\model\Generator
         $relations = parent::generateRelations();
 
         // inject namespace
+
         $ns = "\\{$this->ns}\\";
         foreach ($relations AS $model => $relInfo) {
             foreach ($relInfo AS $relName => $relData) {
+
+
+                if(isset($relData[1])&&!empty($relData[1])){
+                    $ns=getNamespaceForPhpFile("common/models",$relData[1]);
+                }
+
+
 
                 // removed duplicated relations, eg. klientai, klientai0
                 if ($this->removeDuplicateRelations && is_numeric(substr($relName, -1))) {
